@@ -1,0 +1,25 @@
+---
+- name: install varnish-4.1 rpm
+  yum:
+    name: https://repo.varnish-cache.org/redhat/varnish-4.1.el{{ ansible_distribution_major_version }}.rpm
+    state: present
+
+- name: install varnish
+  yum: name=varnish state=present
+
+- name: configure varnish sysconfig
+  template: src=sysconfig/varnish.j2 dest=/etc/sysconfig/varnish owner=root group=root mode=0644
+  when: ansible_distribution_major_version == "6"
+
+- block:
+  - name: configure varnish params
+    template: src=varnish.params.j2 dest=/etc/varnish/varnish.params owner=root group=root mode=0644
+    notify: restart varnish
+
+  - name: configure varnish service
+    template: src=varnish.service.j2 dest=/etc/systemd/system/varnish.service owner=root group=root mode=0644
+    notify: restart varnish
+  when: ansible_distribution_major_version == "7"
+
+- name: start varnish service
+  service: name=varnish state=started enabled=yes
