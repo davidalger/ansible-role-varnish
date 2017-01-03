@@ -1,0 +1,31 @@
+---
+- name: set fact varnish_params_dest
+  set_fact:
+    varnish_params_dest: /etc/varnish/varnish{{ varnish_config_suffix }}.params
+
+- name: configure varnish{{ varnish_config_suffix }} params
+  template: 
+    src: varnish.params.j2
+    dest: "{{ varnish_params_dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  notify: "{{ varnish_restart_handler }}"
+
+- name: configure varnish{{ varnish_config_suffix }} service
+  template:
+    src: varnish.service.j2
+    dest: /etc/systemd/system/varnish{{ varnish_config_suffix }}.service
+    owner: root
+    group: root
+    mode: 0644
+  notify: "{{ varnish_restart_handler }}"
+
+- name: configure varnish{{ varnish_config_suffix }} vcl reload
+  template: 
+    src: varnish_reload_vcl.j2
+    dest: /usr/sbin/varnish_reload_vcl{{ varnish_config_suffix }}
+    owner: root
+    group: root
+    mode: 0755
+  notify: "{{ varnish_restart_handler }}"

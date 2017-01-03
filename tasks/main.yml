@@ -7,19 +7,13 @@
 - name: install varnish
   yum: name=varnish state=present
 
-- name: configure varnish sysconfig
-  template: src=sysconfig/varnish.j2 dest=/etc/sysconfig/varnish owner=root group=root mode=0644
+- include: facts.yml
+
+- include: configure-el6.yml
   when: ansible_distribution_major_version == "6"
 
-- block:
-  - name: configure varnish params
-    template: src=varnish.params.j2 dest=/etc/varnish/varnish.params owner=root group=root mode=0644
-    notify: restart varnish
-
-  - name: configure varnish service
-    template: src=varnish.service.j2 dest=/etc/systemd/system/varnish.service owner=root group=root mode=0644
-    notify: restart varnish
+- include: configure-el7.yml
   when: ansible_distribution_major_version == "7"
 
-- name: start varnish service
-  service: name=varnish state=started enabled=yes
+- name: start varnish{{ varnish_config_suffix }} service
+  service: name=varnish{{ varnish_config_suffix }} state=started enabled=yes

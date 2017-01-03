@@ -1,0 +1,2 @@
+---
+varnish_restart_handler: restart varnish

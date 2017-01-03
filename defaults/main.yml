@@ -13,6 +13,7 @@ varnish_admin_listen_port: 6082
 varnish_vcl_conf: /etc/varnish/default.vcl
 
 # Varnish instance name; used in multi-instance setups. See man page for details.
+# Also used for file suffixing; example: varnish.params will be deployed as varnish-{{ varnish_instance_name }}.params
 varnish_instance_name:
 
 # Cache size: in bytes, optionally using k / M / G / T suffix
