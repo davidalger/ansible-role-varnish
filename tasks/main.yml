@@ -8,12 +8,7 @@
   yum: name=varnish state=present
 
 - include: facts.yml
-
-- include: configure-el6.yml
-  when: ansible_distribution_major_version == "6"
-
-- include: configure-el7.yml
-  when: ansible_distribution_major_version == "7"
+- include: configure-el{{ ansible_distribution_major_version }}.yml
 
 - name: start varnish{{ varnish_config_suffix }} service
   service: name=varnish{{ varnish_config_suffix }} state=started enabled=yes
