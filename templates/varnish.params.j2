@@ -41,5 +41,8 @@ DAEMON_OPTS="-t {{ varnish_ttl }} \
 {% endif %}
              -p thread_pool_min={{ varnish_min_threads }} \
              -p thread_pool_max={{ varnish_max_threads }} \
+{% if varnish_esi_ignore_https %}
+             -p feature=+esi_ignore_https \
+{% endif %}
              -p http_resp_hdr_len={{ varnish_http_resp_hdr_len }} \
              -p cli_buffer=16384"

@@ -77,5 +77,8 @@ DAEMON_OPTS="-a ${VARNISH_LISTEN_ADDRESS}:${VARNISH_LISTEN_PORT} \
              -p thread_pool_max=${VARNISH_MAX_THREADS} \
              -S ${VARNISH_SECRET_FILE} \
              -s ${VARNISH_STORAGE} \
+{% if varnish_esi_ignore_https %}
+             -p feature=+esi_ignore_https \
+{% endif %}
              -p http_resp_hdr_len={{ varnish_http_resp_hdr_len }} \
              -p cli_buffer=16384"

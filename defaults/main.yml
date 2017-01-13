@@ -30,3 +30,6 @@ varnish_max_threads: 1000
 
 # Defaulting to 64k vs varnish default of 8k to support the lengthy X-Magento-* headers
 varnish_http_resp_hdr_len: 65536
+
+# When using secure URLs on the frontend, this is neccessary to prevent backend connect failurs
+varnish_esi_ignore_https: yes
