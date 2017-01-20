@@ -33,19 +33,19 @@ RELOAD_VCL=1
 VARNISH_VCL_CONF={{ varnish_vcl_conf }}
 
 # Varnish instance name; used in multi-instance setups. See man page for details.
-{% if varnish_instance_name is not none %}
-VARNISH_INSTANCE_NAME={{ varnish_instance_name }}
+{% if varnish_instance.name is not none %}
+VARNISH_INSTANCE_NAME={{ varnish_instance.name }}
 {% endif %}
 
 # Default address and port to bind to
 # Blank address means all IPv4 and IPv6 interfaces, otherwise specify
 # a host name, an IPv4 dotted quad, or an IPv6 address in brackets.
 VARNISH_LISTEN_ADDRESS={{ varnish_listen_address }}
-VARNISH_LISTEN_PORT={{ varnish_listen_port }}
+VARNISH_LISTEN_PORT={{ varnish_instance.port }}
 
 # Telnet admin interface listen address and port
 VARNISH_ADMIN_LISTEN_ADDRESS={{ varnish_admin_listen_address }}
-VARNISH_ADMIN_LISTEN_PORT={{ varnish_admin_listen_port }}
+VARNISH_ADMIN_LISTEN_PORT={{ varnish_instance.admin_port }}
 
 # Shared secret file for admin interface
 VARNISH_SECRET_FILE=/etc/varnish/secret
@@ -70,7 +70,7 @@ DAEMON_OPTS="-a ${VARNISH_LISTEN_ADDRESS}:${VARNISH_LISTEN_PORT} \
              -f ${VARNISH_VCL_CONF} \
              -T ${VARNISH_ADMIN_LISTEN_ADDRESS}:${VARNISH_ADMIN_LISTEN_PORT} \
              -t ${VARNISH_TTL} \
-{% if varnish_instance_name is not none %}
+{% if varnish_instance.name is not none %}
              -n ${VARNISH_INSTANCE_NAME} \
 {% endif %}
              -p thread_pool_min=${VARNISH_MIN_THREADS} \

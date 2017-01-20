@@ -11,11 +11,11 @@
 # chkconfig: - 90 10
 # description: Varnish is a high-performance HTTP accelerator
 # processname: varnishd
-# config: /etc/sysconfig/varnish{{ varnish_config_suffix }}
-# pidfile: /var/run/varnish{{ varnish_config_suffix }}.pid
+# config: /etc/sysconfig/varnish-{{ varnish_instance.name }}
+# pidfile: /var/run/varnish-{{ varnish_instance.name }}.pid
 
 ### BEGIN INIT INFO
-# Provides: varnish{{ varnish_config_suffix }}
+# Provides: varnish-{{ varnish_instance.name }}
 # Required-Start: $network $local_fs $remote_fs
 # Required-Stop: $network $local_fs $remote_fs
 # Default-Start:
@@ -29,16 +29,16 @@
 . /etc/init.d/functions
 
 retval=0
-pidfile=/var/run/varnish{{ varnish_config_suffix }}.pid
+pidfile=/var/run/varnish-{{ varnish_instance.name }}.pid
 
 exec="/usr/sbin/varnishd"
-reload_exec="/usr/sbin/varnish_reload_vcl{{ varnish_config_suffix }}"
+reload_exec="/usr/sbin/varnish_reload_vcl-{{ varnish_instance.name }}"
 prog="varnishd"
-config="/etc/sysconfig/varnish{{ varnish_config_suffix }}"
-lockfile="/var/lock/subsys/varnish{{ varnish_config_suffix }}"
+config="/etc/sysconfig/varnish-{{ varnish_instance.name }}"
+lockfile="/var/lock/subsys/varnish-{{ varnish_instance.name }}"
 
 # Include varnish defaults
-[ -e /etc/sysconfig/varnish{{ varnish_config_suffix }} ] && . /etc/sysconfig/varnish{{ varnish_config_suffix }}
+[ -e /etc/sysconfig/varnish-{{ varnish_instance.name }} ] && . /etc/sysconfig/varnish-{{ varnish_instance.name }}
 
 
 start() {
@@ -72,7 +72,7 @@ start() {
 		ulimit -c ${DAEMON_COREFILE_LIMIT}
 	fi
 
-        # $DAEMON_OPTS is set in /etc/sysconfig/varnish{{ varnish_config_suffix }}.
+        # $DAEMON_OPTS is set in /etc/sysconfig/varnish-{{ varnish_instance.name }}.
 	if [ "$DAEMON_OPTS" = "" ]; then
 		echo "\$DAEMON_OPTS is empty."
 		echo -n "Please put configuration options in $config"

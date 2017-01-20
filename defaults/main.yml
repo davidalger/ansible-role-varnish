@@ -1,23 +1,24 @@
 ---
-# Default address and port to bind to. Blank address means all IPv4
-# and IPv6 interfaces, otherwise specify a host name, an IPv4 dotted
-# quad, or an IPv6 address in brackets.
-varnish_listen_address: 127.0.0.1
-varnish_listen_port: 6081
 
-# Admin interface listen address and port
+# Varnish instance configuration. See man page for details on named instances. Also used for file suffixing;
+# example: varnish.params will be deployed as varnish-{{ varnish_instance.name }}.params
+varnish_instance:
+  name: prod
+  port: 6081
+  admin_port: 6082
+
+# Default address to bind to. Blank address means all IPv4 and IPv6 interfaces, otherwise specify a host name,
+# an IPv4 dotted quad, or an IPv6 address in brackets.
+varnish_listen_address: 127.0.0.1
+
+# Admin interface listen address
 varnish_admin_listen_address: 127.0.0.1
-varnish_admin_listen_port: 6082
 
 # VCL file to import to varnish_vcl_conf location
 varnish_vcl_src_file: magento2.vcl.j2
 
 # Main configuration file.
 varnish_vcl_conf: /etc/varnish/default.vcl
-
-# Varnish instance name; used in multi-instance setups. See man page for details.
-# Also used for file suffixing; example: varnish.params will be deployed as varnish-{{ varnish_instance_name }}.params
-varnish_instance_name:
 
 # Cache size: in bytes, optionally using k / M / G / T suffix
 varnish_storage_size: 4G

@@ -1,19 +1,16 @@
-# Role: Varnish 4.1
-This role installs and configures Varnish 4.1 from the public RPM on RHEL 6 and RHEL 7.
+# Ansible Varnish 4.1
 
-## Usage Information
+* For multiple varnish instance setups
+* Installs varnish 4.1 from public RPM
+* Supports RHEL 6 / 7
 
-For single-instance usage, simple assign the varnish role to the server in your playbook.
+## Example Usage
 
-For dual-instance usage, reference the following role assignments for an example:
+* Single `prod` varnish instance setup:
 
-      roles:
-        - name: varnish
-        - name: varnish
-          varnish_instance_name: stage
-          varnish_restart_handler: restart varnish-stage
-          varnish_listen_port: 6091
-          varnish_admin_listen_port: 6092
-      handlers:
-        - name: restart varnish-stage
-          service: name=varnish-stage state=restarted
+        - varnish
+
+* Double varnish instance setup:
+
+        - { name: varnish, varnish_instance: { name: prod, port: 6081, admin_port: 6082 }}
+        - { name: varnish, varnish_instance: { name: stage, port: 6091, admin_port: 6092 }}
