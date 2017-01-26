@@ -12,5 +12,5 @@
 
 * Double varnish instance setup:
 
-        - { name: varnish, varnish_instance: { name: prod, port: 6081, admin_port: 6082 }}
-        - { name: varnish, varnish_instance: { name: stage, port: 6091, admin_port: 6092 }}
+        - { role: varnish, varnish_instance: { name: prod, port: 6081, admin_port: 6082 }}
+        - { role: varnish, varnish_instance: { name: stage, port: 6091, admin_port: 6092 }}
