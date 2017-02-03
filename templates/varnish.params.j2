@@ -44,5 +44,7 @@ DAEMON_OPTS="-t {{ varnish_ttl }} \
 {% if varnish_esi_ignore_https %}
              -p feature=+esi_ignore_https \
 {% endif %}
+             -p workspace_backend={{ varnish_workspace_backend }} \
+             -p http_resp_size={{ varnish_http_resp_size }} \
              -p http_resp_hdr_len={{ varnish_http_resp_hdr_len }} \
              -p cli_buffer=16384"
