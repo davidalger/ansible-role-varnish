@@ -11,7 +11,7 @@
 RELOAD_VCL=1
 
 # Main configuration file. You probably want to change it.
-VARNISH_VCL_CONF={{ varnish_vcl_conf }}
+VARNISH_VCL_CONF=/etc/varnish/varnish-{{ varnish_instance.name }}.vcl
 
 # Default address and port to bind to. Blank address means all IPv4
 # and IPv6 interfaces, otherwise specify a host name, an IPv4 dotted

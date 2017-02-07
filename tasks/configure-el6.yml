@@ -20,8 +20,8 @@
     - src: varnish_reload_vcl.j2
       dest: /usr/sbin/varnish_reload_vcl-{{ varnish_instance.name }}
       mode: "0755"
-    - src: "{{ varnish_vcl_src_file }}"
-      dest: "{{ varnish_vcl_conf }}"
+    - src: "{{ varnish_vcl_template }}"
+      dest: /etc/varnish/varnish-{{ varnish_instance.name }}.vcl
       mode: "0755"
   register: varnish_config
   notify: restart varnish

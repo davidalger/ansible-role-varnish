@@ -30,7 +30,7 @@ NPROCS="unlimited"
 RELOAD_VCL=1
 
 # Main configuration file.
-VARNISH_VCL_CONF={{ varnish_vcl_conf }}
+VARNISH_VCL_CONF=/etc/varnish/varnish-{{ varnish_instance.name }}.vcl
 
 # Varnish instance name; used in multi-instance setups. See man page for details.
 {% if varnish_instance.name is not none %}
