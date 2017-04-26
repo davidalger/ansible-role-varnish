@@ -7,6 +7,7 @@ varnish_instance:
   port: 6081
   admin_port: 6082
   backend_port: 8080
+  backend_host: localhost     # this is optional; defaults to localhost if unspecified
 
 # Default address to bind to. Blank address means all IPv4 and IPv6 interfaces, otherwise specify a host name,
 # an IPv4 dotted quad, or an IPv6 address in brackets.
@@ -17,6 +18,9 @@ varnish_admin_listen_address: 127.0.0.1
 
 # Default varnish instance configuration template
 varnish_vcl_template: magento2.vcl.j2
+
+# List of hosts used in the vcl template perge acl
+varnish_acl_purge_hosts: [ localhost ]
 
 # Cache size: in bytes, optionally using k / M / G / T suffix
 varnish_storage_size: 4G

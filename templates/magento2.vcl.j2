@@ -7,14 +7,16 @@ import std;
 # The minimal Varnish version is 4.0
  
 backend default {
-    .host = "localhost";
+    .host = "{{ varnish_instance.backend_host|default('localhost') }}";
     .port = "{{ varnish_instance.backend_port }}";
     .first_byte_timeout = 3600s;
     .between_bytes_timeout = 300s;
 }
 
 acl purge {
-    "localhost";
+{% for acl_host in varnish_acl_purge_hosts %}
+    "{{ acl_host }}";
+{% endfor %}
 }
 
 sub vcl_recv {
