@@ -1,13 +1,19 @@
 ---
-
-# Varnish instance configuration. See man page for details on named instances. Also used for file suffixing;
+##############################
+# Instance configuration
+#
+# See man page for details on named instances. Also used for file suffixing;
 # example: varnish.params will be deployed as varnish-{{ varnish_instance.name }}.params
+#
 varnish_instance:
   name: prod
   port: 6081
   admin_port: 6082
   backend_port: 8080
   backend_host: localhost     # this is optional; defaults to localhost if unspecified
+
+##############################
+## Listener settings
 
 # Default address to bind to. Blank address means all IPv4 and IPv6 interfaces, otherwise specify a host name,
 # an IPv4 dotted quad, or an IPv6 address in brackets.
@@ -16,11 +22,23 @@ varnish_listen_address: 127.0.0.1
 # Admin interface listen address
 varnish_admin_listen_address: 127.0.0.1
 
+##############################
+## VCL config
+
 # Default varnish instance configuration template
 varnish_vcl_template: magento2.vcl.j2
 
+# Backend reponse ttl in seconds
+varnish_beresp_ttl: 86400
+
+# Health check URI (for pass through only; no health checks in VCL currently)
+varnish_health_check: /health.php
+
 # List of hosts used in the vcl template perge acl
 varnish_acl_purge_hosts: [ localhost ]
+
+##############################
+## Configurable varnish params
 
 # Cache size: in bytes, optionally using k / M / G / T suffix
 varnish_storage_size: 4G
@@ -43,5 +61,5 @@ varnish_http_resp_size: 196608
 # Defaulting to 128k vs varnish default of 8k to support the lengthy X-Magento-* headers
 varnish_http_resp_hdr_len: 131072
 
-# When using secure URLs on the frontend, this is neccessary to prevent backend connect failurs
+# When using secure URLs on the frontend, this is neccessary to prevent backend connect failures
 varnish_esi_ignore_https: yes

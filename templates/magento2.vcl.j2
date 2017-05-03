@@ -60,6 +60,11 @@ sub vcl_recv {
         return (pass);
     }
 
+    # Bypass health check requests
+    if (req.url ~ "{{ varnish_health_check }}") {
+        return (pass);
+    }
+
     # normalize url in case of leading HTTP scheme and domain
     set req.url = regsub(req.url, "^http[s]?://", "");
 
@@ -123,7 +128,7 @@ sub vcl_backend_response {
         return (deliver);
     } elsif (beresp.http.Cache-Control ~ "private") {
         set beresp.uncacheable = true;
-        set beresp.ttl = 86400s;
+        set beresp.ttl = {{ varnish_beresp_ttl }}s;
         return (deliver);
     }
 
