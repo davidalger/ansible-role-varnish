@@ -18,6 +18,15 @@ acl purge {
     "{{ acl_host }}";
 {% endfor %}
 }
+{% if varnish_acl_profile_hosts %}
+
+# List of hosts/ips allowed to use Blackfire to profile varnish cached pages
+acl profile {
+{% for acl_host in varnish_acl_profile_hosts %}
+    "{{ acl_host }}";
+{% endfor %}
+}
+{% endif %}
 
 sub vcl_recv {
     if (req.method == "PURGE") {
@@ -49,6 +58,22 @@ sub vcl_recv {
           /* Non-RFC2616 or CONNECT which is weird. */
           return (pipe);
     }
+{% if varnish_acl_profile_hosts %}
+
+    # Handle profile requests from Blackfire browser plugin
+    if (req.http.X-Blackfire-Query) {
+        if (client.ip !~ profile || std.ip(req.http.X-Real-IP, "0.0.0.0") !~ profile) {
+            return (synth(403, "Forbidden"));
+        }
+
+        # ESI request should not be included in the profile (doc page: http://bit.ly/2GdiE1S)
+        if (req.esi_level > 0) {
+            unset req.http.X-Blackfire-Query;
+        } else {
+            return (pass);
+        }
+    }
+{% endif %}
 
     # We only deal with GET and HEAD by default
     if (req.method != "GET" && req.method != "HEAD") {

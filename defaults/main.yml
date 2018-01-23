@@ -37,6 +37,17 @@ varnish_health_check: /health.php
 # List of hosts used in the vcl template perge acl
 varnish_acl_purge_hosts: [ localhost ]
 
+# Array of hosts used in profile acl; supports use of Blackfire profiling when needed
+#
+# At minimum this should both include "localhost" when varnish resides behind nginx or another
+# similar proxy on the same server and the actual client IPs which should be allowed to bust
+# through varnish when profiling. When set, the appropriate VCL code will be included (assuming
+# use of default VCL template) and requests where client.ip and X-Real-IP are BOTH on the list
+# of allowed IPs will be allowed through. All other requests with a X-Blackfire-Query header
+# will be denied.
+#
+varnish_acl_profile_hosts: false
+
 ##############################
 ## Configurable varnish params
 
