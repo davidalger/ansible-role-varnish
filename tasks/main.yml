@@ -44,7 +44,7 @@
     state: stopped
     enabled: no
 
-- include: configure-el{{ ansible_distribution_major_version }}.yml
+- include_tasks: configure-el{{ ansible_distribution_major_version }}.yml
 
 # append the actual service name to list which the "restart varnish" handler iterates
 # this is neccessary because handlers cannot use variables in the same way tasks can
