@@ -4,7 +4,7 @@ Installs [Varnish Cache](https://varnish-cache.org) version 4.1 on RHEL / CentOS
 
 ## Requirements
 
-* geerlingguy.repo-epel
+None.
 
 ## Role Variables
 

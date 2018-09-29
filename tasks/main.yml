@@ -1,16 +1,4 @@
 ---
-- name: Install varnish41 repo dependencies
-  yum:
-    name: "{{ item }}"
-  with_items:
-    - pygpgme
-    - yum-utils
-
-- name: Remove deprecated varnish41 repo config
-  file:
-    path: /etc/yum.repos.d/varnish-4.1.repo
-    state: absent
-
 - name: Check if varnish41 repo is already configured
   stat:
     path: /etc/yum.repos.d/varnishcache_varnish41.repo
