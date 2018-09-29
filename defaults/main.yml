@@ -6,7 +6,7 @@
 # example: varnish.params will be deployed as varnish-{{ varnish_instance.name }}.params
 #
 varnish_instance:
-  name: prod
+  name: data
   port: 6081
   admin_port: 6082
   backend_port: 8080

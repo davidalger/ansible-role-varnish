@@ -12,7 +12,7 @@ See `defaults/main.yml` for a list of variables available to customize the servi
 
 ## Example Usage
 
-* Single `prod` varnish instance setup:
+* Single `data` varnish instance setup:
 
         - varnish
 
