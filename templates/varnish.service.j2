@@ -9,7 +9,7 @@ After=network.target
 # /etc/systemd/system/varnish.service and make your changes there.
 # This will override the file kept at /lib/systemd/system/varnish.service
 #
-# Enviroment variables may be found in /etc/varnish/varnish-{{ varnish_instance.name }}.params
+# Enviroment variables may be found in /etc/varnish/varnish{{ varnish_service_suffix }}.params
 #
 
 # Maximum number of open files (for ulimit -n)
@@ -25,13 +25,13 @@ LimitMEMLOCK=82000
 # Maximum size of the corefile.
 LimitCORE=infinity
 
-EnvironmentFile=/etc/varnish/varnish-{{ varnish_instance.name }}.params
+EnvironmentFile=/etc/varnish/varnish{{ varnish_service_suffix }}.params
 
 Type=forking
-PIDFile=/var/run/varnish-{{ varnish_instance.name }}.pid
+PIDFile=/var/run/varnish{{ varnish_service_suffix }}.pid
 PrivateTmp=true
 ExecStart=/usr/sbin/varnishd \
-        -P /var/run/varnish-{{ varnish_instance.name }}.pid \
+        -P /var/run/varnish{{ varnish_service_suffix }}.pid \
         -f $VARNISH_VCL_CONF \
         -a ${VARNISH_LISTEN_ADDRESS}:${VARNISH_LISTEN_PORT} \
         -T ${VARNISH_ADMIN_LISTEN_ADDRESS}:${VARNISH_ADMIN_LISTEN_PORT} \
@@ -39,7 +39,7 @@ ExecStart=/usr/sbin/varnishd \
         -s $VARNISH_STORAGE \
         $DAEMON_OPTS
 
-ExecReload=/usr/sbin/varnish_reload_vcl-{{ varnish_instance.name }}
+ExecReload=/usr/sbin/varnish_reload_vcl{{ varnish_service_suffix }}
 
 [Install]
 WantedBy=multi-user.target

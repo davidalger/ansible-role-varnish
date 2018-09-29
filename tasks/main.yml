@@ -32,17 +32,26 @@
     state: stopped
     enabled: no
 
+- set_fact:
+    varnish_service_vcl: default
+    varnish_service_suffix: ""
+
+- set_fact:
+    varnish_service_vcl: "varnish-{{ varnish_instance.name }}"
+    varnish_service_suffix: "-{{ varnish_instance.name }}"
+  when: ('name' in varnish_instance) and (varnish_instance.name is not none)
+
 - include_tasks: configure-el{{ ansible_distribution_major_version }}.yml
 
 # append the actual service name to list which the "restart varnish" handler iterates
 # this is neccessary because handlers cannot use variables in the same way tasks can
-- name: Register varnish-{{ varnish_instance.name }} restart
+- name: Register varnish{{ varnish_service_suffix }} restart
   set_fact:
-    varnish_service_restart: "{{ varnish_service_restart|default([]) }} + [ 'varnish-{{ varnish_instance.name }}' ]"
+    varnish_service_restart: "{{ varnish_service_restart|default([]) }} + [ 'varnish{{ varnish_service_suffix }}' ]"
   when: varnish_config.changed
 
-- name: Start varnish-{{ varnish_instance.name }} service
+- name: Start varnish{{ varnish_service_suffix }} service
   service:
-    name: varnish-{{ varnish_instance.name }}
+    name: varnish{{ varnish_service_suffix }}
     state: started
     enabled: yes

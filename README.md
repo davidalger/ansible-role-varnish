@@ -14,14 +14,14 @@ See `defaults/main.yml` for a list of variables available to customize the servi
 
 ## Example Usage
 
-* Single `data` varnish instance setup:
+* Single varnish instance:
 
-        - varnish
+        - { role: davidalger.varnish, tags: varnish }
 
-* Double varnish instance setup:
+* Multi varnish instance:
 
-        - { role: varnish, varnish_instance: { name: prod, port: 6081, admin_port: 6082 }}
-        - { role: varnish, varnish_instance: { name: stage, port: 6091, admin_port: 6092 }}
+        - { role: davidalger.varnish, tags: varnish, varnish_instance: { name: site1, port: 6081, admin_port: 6082 }}
+        - { role: davidalger.varnish, tags: varnish, varnish_instance: { name: site2, port: 6091, admin_port: 6092 }}
 
 ## License
 

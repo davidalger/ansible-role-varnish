@@ -3,10 +3,10 @@
 # Instance configuration
 #
 # See man page for details on named instances. Also used for file suffixing;
-# example: varnish.params will be deployed as varnish-{{ varnish_instance.name }}.params
+# example: varnish.params will be deployed as varnish{{ varnish_service_suffix }}.params
 #
 varnish_instance:
-  name: data
+  # name: data                # this is optional; if specified, varnish-data service will be configured
   port: 6081
   admin_port: 6082
   backend_port: 8080
