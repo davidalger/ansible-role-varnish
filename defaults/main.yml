@@ -35,7 +35,7 @@ varnish_beresp_ttl: 86400
 varnish_health_check: /health.php
 
 # List of hosts used in the vcl template perge acl
-varnish_acl_purge_hosts: [ localhost ]
+varnish_acl_purge_hosts: ["localhost"]
 
 # Array of hosts used in profile acl; supports use of Blackfire profiling when needed
 #
@@ -77,4 +77,4 @@ varnish_http_req_size: 65536
 varnish_http_req_hdr_len: 32768
 
 # When using secure URLs on the frontend, this is neccessary to prevent backend connect failures
-varnish_esi_ignore_https: yes
+varnish_esi_ignore_https: true

@@ -4,7 +4,7 @@
   set_fact: varnish_params_dest=/etc/sysconfig/varnish{{ varnish_service_suffix }}
 
 - name: configure varnish{{ varnish_service_suffix }} service
-  template: 
+  template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: root
