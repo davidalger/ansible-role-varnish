@@ -31,6 +31,7 @@
     name: varnish
     state: stopped
     enabled: false
+  when: ('name' in varnish_instance) and (varnish_instance.name is not none)
 
 - name: Configure internal variables for single-instance
   set_fact:
