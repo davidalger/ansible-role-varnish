@@ -4,7 +4,8 @@ services: docker
 
 env:
   global:
-    - ROLE_NAME: varnish
+    - REPO_NAME: ansible-role-varnish
+    - ROLE_NAME: davidalger.varnish
 
   matrix:
     - MOLECULE_DISTRO: centos7
@@ -18,8 +19,8 @@ install:
 before_script:
   # Use actual Ansible Galaxy role name for the project directory.
   - cd ../
-  - mv ansible-role-$ROLE_NAME davidalger.$ROLE_NAME
-  - cd davidalger.$ROLE_NAME
+  - mv $REPO_NAME $ROLE_NAME
+  - cd $ROLE_NAME
 
 script:
   - molecule test
