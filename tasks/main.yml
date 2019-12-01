@@ -44,7 +44,30 @@
     varnish_service_suffix: "-{{ varnish_instance.name }}"
   when: ('name' in varnish_instance) and (varnish_instance.name is not none)
 
-- include_tasks: configure-el{{ ansible_distribution_major_version }}.yml
+- name: configure varnish{{ varnish_service_suffix }} service
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+  with_items:
+    - src: varnish.params.j2
+      dest: /etc/varnish/varnish{{ varnish_service_suffix }}.params
+      mode: "0644"
+    - src: varnish.service.j2
+      dest: /etc/systemd/system/varnish{{ varnish_service_suffix }}.service
+      mode: "0644"
+    - src: varnish_reload_vcl.j2
+      dest: /usr/sbin/varnish_reload_vcl{{ varnish_service_suffix }}
+      mode: "0755"
+    - src: "{{ varnish_vcl_template }}"
+      dest: /etc/varnish/{{ varnish_service_vcl }}.vcl
+      mode: "0755"
+  register: varnish_config
+  notify:
+    - reload systemd configuration
+    - restart varnish
 
 # append the actual service name to list which the "restart varnish" handler iterates
 # this is neccessary because handlers cannot use variables in the same way tasks can

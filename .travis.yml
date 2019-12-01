@@ -8,10 +8,11 @@ env:
     - ROLE_NAME: davidalger.varnish
 
   matrix:
-    - MOLECULE_DISTRO: centos7
+    - MOLECULE_DISTRO: centos8
       MOLECULE_DOCKER_COMMAND: /usr/lib/systemd/systemd
 
-    - MOLECULE_DISTRO: centos6
+    - MOLECULE_DISTRO: centos7
+      MOLECULE_DOCKER_COMMAND: /usr/lib/systemd/systemd
 
 install:
   - pip install molecule docker
