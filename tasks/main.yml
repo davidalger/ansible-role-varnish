@@ -1,23 +1,23 @@
 ---
-- name: Check if varnish41 repo is already configured
+- name: Check if varnish{{ varnish_version }} repo is already configured
   stat:
-    path: /etc/yum.repos.d/varnishcache_varnish41.repo
+    path: /etc/yum.repos.d/varnishcache_varnish{{ varnish_version }}.repo
   register: varnish_repofile_result
 
-- name: Install varnish41 repo
+- name: Install varnish{{ varnish_version }} repo
   template:
-    src: varnishcache_varnish41.repo
-    dest: /etc/yum.repos.d/varnishcache_varnish41.repo
+    src: varnishcache.repo.j2
+    dest: /etc/yum.repos.d/varnishcache_varnish{{ varnish_version }}.repo
   when: not varnish_repofile_result.stat.exists
 
 # - name: Import Varnish GPG key
 #   rpm_key:
-#     key: https://packagecloud.io/varnishcache/varnish41/gpgkey
+#     key: https://packagecloud.io/varnishcache/varnish{{ varnish_version }}/gpgkey
 #     state: present
 #   when: not varnish_repofile_result.stat.exists
 
-- name: Generate yum cache for varnish41 repo
-  command: yum -q makecache -y --disablerepo='*' --enablerepo='varnishcache_varnish41*'
+- name: Generate yum cache for varnish{{ varnish_version }} repo
+  command: yum -q makecache -y --disablerepo='*' --enablerepo='varnishcache_varnish{{ varnish_version }}*'
   args:
     warn: false
   when: not varnish_repofile_result.stat.exists
