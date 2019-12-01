@@ -26,6 +26,15 @@
   yum:
     name: varnish
 
+- name: Populate secret
+  copy:
+    content: "{{ 9999999999999999999999 | random | to_uuid }}\n"
+    dest: /etc/varnish/secret
+    mode: 0600
+    owner: root
+    group: root
+    force: no   # never overwrite the file if already present
+
 - name: Disable default varnish service
   service:
     name: varnish
