@@ -13,7 +13,7 @@ lint:
 platforms:
   - name: instance
     image: geerlingguy/docker-${MOLECULE_DISTRO:-centos7}-ansible
-    command: ${MOLECULE_DOCKER_COMMAND:-"sleep infinity"}
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
     privileged: true
     pre_build_image: true
 
