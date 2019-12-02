@@ -8,7 +8,7 @@ env:
     - ROLE_NAME: davidalger.varnish
 
   matrix:
-    - MOLECULE_DISTRO: centos8
+    # - MOLECULE_DISTRO: centos8
     - MOLECULE_DISTRO: centos7
 
 install:
