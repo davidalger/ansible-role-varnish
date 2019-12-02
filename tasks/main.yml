@@ -33,7 +33,7 @@
     mode: 0600
     owner: root
     group: root
-    force: no   # never overwrite the file if already present
+    force: false   # never overwrite the file if already present
 
 - name: Disable default varnish service
   service:
