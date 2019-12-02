@@ -12,7 +12,7 @@ galaxy_info:
     - name: EL
       versions:
         - 7
-        - 6
+        - 8
 
   galaxy_tags:
     - varnish
