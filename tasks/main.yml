@@ -1,23 +1,23 @@
 ---
-- name: Check if varnish41 repo is already configured
+- name: Check if varnish{{ varnish_version }} repo is already configured
   stat:
-    path: /etc/yum.repos.d/varnishcache_varnish41.repo
+    path: /etc/yum.repos.d/varnishcache_varnish{{ varnish_version }}.repo
   register: varnish_repofile_result
 
-- name: Install varnish41 repo
+- name: Install varnish{{ varnish_version }} repo
   template:
-    src: varnishcache_varnish41.repo
-    dest: /etc/yum.repos.d/varnishcache_varnish41.repo
+    src: varnishcache.repo.j2
+    dest: /etc/yum.repos.d/varnishcache_varnish{{ varnish_version }}.repo
   when: not varnish_repofile_result.stat.exists
 
-# - name: Import Varnish GPG key
-#   rpm_key:
-#     key: https://packagecloud.io/varnishcache/varnish41/gpgkey
-#     state: present
-#   when: not varnish_repofile_result.stat.exists
+- name: Import varnish{{ varnish_version }} GPG key
+  rpm_key:
+    key: https://packagecloud.io/varnishcache/varnish{{ varnish_version }}/gpgkey
+    state: present
+  when: not varnish_repofile_result.stat.exists
 
-- name: Generate yum cache for varnish41 repo
-  command: yum -q makecache -y --disablerepo='*' --enablerepo='varnishcache_varnish41*'
+- name: Generate yum cache for varnish{{ varnish_version }} repo
+  command: yum -q makecache -y --disablerepo='*' --enablerepo='varnishcache_varnish{{ varnish_version }}*'
   args:
     warn: false
   when: not varnish_repofile_result.stat.exists
@@ -25,6 +25,15 @@
 - name: Install varnish
   yum:
     name: varnish
+
+- name: Populate secret
+  copy:
+    content: "{{ 9999999999999999999999 | random | to_uuid }}\n"
+    dest: /etc/varnish/secret
+    mode: 0600
+    owner: root
+    group: root
+    force: false   # never overwrite the file if already present
 
 - name: Disable default varnish service
   service:
@@ -44,7 +53,30 @@
     varnish_service_suffix: "-{{ varnish_instance.name }}"
   when: ('name' in varnish_instance) and (varnish_instance.name is not none)
 
-- include_tasks: configure-el{{ ansible_distribution_major_version }}.yml
+- name: configure varnish{{ varnish_service_suffix }} service
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+  with_items:
+    - src: varnish.params.j2
+      dest: /etc/varnish/varnish{{ varnish_service_suffix }}.params
+      mode: "0644"
+    - src: varnish.service.j2
+      dest: /etc/systemd/system/varnish{{ varnish_service_suffix }}.service
+      mode: "0644"
+    - src: varnish_reload_vcl.j2
+      dest: /usr/sbin/varnish_reload_vcl{{ varnish_service_suffix }}
+      mode: "0755"
+    - src: "{{ varnish_vcl_template }}"
+      dest: /etc/varnish/{{ varnish_service_vcl }}.vcl
+      mode: "0755"
+  register: varnish_config
+  notify:
+    - reload systemd configuration
+    - restart varnish
 
 # append the actual service name to list which the "restart varnish" handler iterates
 # this is neccessary because handlers cannot use variables in the same way tasks can

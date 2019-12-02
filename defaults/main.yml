@@ -1,4 +1,7 @@
 ---
+## See https://packagecloud.io/varnishcache/ for available versions
+varnish_version: 60lts
+
 ##############################
 # Instance configuration
 #

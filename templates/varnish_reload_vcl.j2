@@ -3,7 +3,7 @@
 
 #
 # reload vcl revisited
-# A script that loads new vcl based on data from {{ varnish_params_dest }}
+# A script that loads new vcl based on data from /etc/varnish/varnish{{ varnish_service_suffix }}.params
 # Ingvar Hagelund <ingvar@redpill-linpro.com>
 #
 # This is free software, distributed under the standard 2 clause BSD license,
@@ -37,7 +37,7 @@ VARNISH_SECRET_FILE=\"$VARNISH_SECRET_FILE\"
 
 # Fallback to the default configuration
 if [ -z "$VARNISH_VCL_CONF" ]; then
-	. {{ varnish_params_dest }}
+	. /etc/varnish/varnish{{ varnish_service_suffix }}.params
 fi
 
 $debug && print_debug
