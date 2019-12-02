@@ -10,11 +10,11 @@
     dest: /etc/yum.repos.d/varnishcache_varnish{{ varnish_version }}.repo
   when: not varnish_repofile_result.stat.exists
 
-# - name: Import Varnish GPG key
-#   rpm_key:
-#     key: https://packagecloud.io/varnishcache/varnish{{ varnish_version }}/gpgkey
-#     state: present
-#   when: not varnish_repofile_result.stat.exists
+- name: Import varnish{{ varnish_version }} GPG key
+  rpm_key:
+    key: https://packagecloud.io/varnishcache/varnish{{ varnish_version }}/gpgkey
+    state: present
+  when: not varnish_repofile_result.stat.exists
 
 - name: Generate yum cache for varnish{{ varnish_version }} repo
   command: yum -q makecache -y --disablerepo='*' --enablerepo='varnishcache_varnish{{ varnish_version }}*'
