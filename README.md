@@ -1,6 +1,6 @@
 # Ansible Role: Varnish Cache
 
-[![Build Status](https://travis-ci.org/davidalger/ansible-role-varnish.svg?branch=master)](https://travis-ci.org/davidalger/ansible-role-varnish)
+[![Build Status](https://travis-ci.com/davidalger/ansible-role-varnish.svg?branch=master)](https://travis-ci.com/davidalger/ansible-role-varnish)
 
 Installs [Varnish Cache](https://varnish-cache.org) version 4/5/6 on RHEL / CentOS 8 and 7 and may be used for either single or multi instance configurations where one or more named varnish services are configured on the same server. See package cloud for details on available versions: https://packagecloud.io/varnishcache/
 
