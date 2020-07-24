@@ -3,7 +3,7 @@
 vcl 4.0;
 
 import std;
-# The minimal Varnish version is 4.0
+# The minimal Varnish version is 6.0
 
 backend default {
     .host = "{{ varnish_instance.backend_host|default('localhost') }}";
