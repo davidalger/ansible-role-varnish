@@ -34,8 +34,8 @@ varnish_vcl_template: magento2.vcl.j2
 # Backend reponse ttl in seconds
 varnish_beresp_ttl: 86400
 
-# Health check URI (for pass through only; no health checks in VCL currently)
-varnish_health_check: /health.php
+# Health check URI (pass health check requests such as /health_check.php and /health.php)
+varnish_health_check: "^/(pub/)?(health_check.php|health.php)$"
 
 # List of hosts used in the vcl template perge acl
 varnish_acl_purge_hosts: ["localhost"]
